@@ -17,6 +17,9 @@ public class ProgressBar {
     if (progress < 0) {
       progress = 0;
     }
+    if (progress > 1) {
+      progress = 1;
+    }
     this.progress = progress;
   }
 
