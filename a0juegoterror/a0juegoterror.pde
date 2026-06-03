@@ -39,7 +39,7 @@ void setup() {
   intro_music.play();
   random = new Random();
   color c = color(255, 0, 0);
-  button = new Button(width*0.3 + height*0.8/4, height*0.8, (int) (width*0.3), (int) (height*0.2), c);
+  button = new Button(width/2-width*0.3 + width*0.15, 614, (int) (width*0.3), (int) (height*0.2), c);
   bar = new ProgressBar(50, 50, 100, 30);
   background_image = loadImage("Fondo00.png");
   bed_image = loadImage("Fondo01.png");
