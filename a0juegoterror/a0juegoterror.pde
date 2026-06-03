@@ -39,7 +39,7 @@ void setup() {
   intro_music.play();
   random = new Random();
   color c = color(255, 0, 0);
-  button = new Button(width*0.3, height*0.8, (int) (width*0.3), (int) (height*0.2), c);
+  button = new Button(width*0.3 + height*0.8/4, height*0.8, (int) (width*0.3), (int) (height*0.2), c);
   bar = new ProgressBar(50, 50, 100, 30);
   background_image = loadImage("Fondo00.png");
   bed_image = loadImage("Fondo01.png");
@@ -133,12 +133,15 @@ void mouseReleased() {
 }
 
 void keyReleased() {
-  if (key == ' ') {
-    background(255, 0, 0);
-  }
-  if (key == ' ' && scene == 1 && monster.getPose() != POSE.CENTER) {
-    bar.setProgress(bar.getProgress() + 0.05);
-  } else if (key == ' ' && scene == 1 && monster.getPose() == POSE.CENTER) {
-    bar.setProgress(bar.getProgress() - 0.07);
+  if ( monster.getPose() != POSE.SCREAMER ) {
+
+    if (key == ' ') {
+      background(255, 0, 0);
+    }
+    if (key == ' ' && scene == 1 && monster.getPose() != POSE.CENTER) {
+      bar.setProgress(bar.getProgress() + 0.05);
+    } else if (key == ' ' && scene == 1 && monster.getPose() == POSE.CENTER) {
+      bar.setProgress(bar.getProgress() - 0.07);
+    }
   }
 }
