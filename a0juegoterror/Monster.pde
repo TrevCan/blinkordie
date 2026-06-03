@@ -21,6 +21,9 @@ public class Monster {
     
     x = width/2;
     y = height/2;
+    
+    x_cama = width/2;
+    y_cama = height/2;
         
     x_left = width/2 - 100;
     y_left = height/2;
