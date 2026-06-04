@@ -156,7 +156,9 @@ void draw() {
     imageMode(CORNER);
     image(win_image, 0, 0);
     screamer_music.pause();
-    win_music.play();
+    if (!win_music.isPlaying()) {
+      win_music.play();
+    }
     break;
   default:
     background(0);
