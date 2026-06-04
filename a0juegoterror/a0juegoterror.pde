@@ -6,6 +6,7 @@ import processing.sound.*;
 SoundFile intro_music;
 SoundFile main_music;
 SoundFile screamer_music;
+SoundFile win_music;
 
 boolean clicked = false;
 Button button;
@@ -17,16 +18,23 @@ int target_time = 5000;
 TimerTask task0;
 Timer timer;
 
+PImage menu_image;
 PImage background_image;
 PImage bed_image;
+PImage win_image;
 
 
 int scene = 0;
+
+TimerTask task_change_to_win_scene;
+
 
 TimerTask task_chooseRandomPose;
 Monster monster;
 
 Random random;
+
+float progress_speed = 0.0005;
 
 void setup() {
 
@@ -35,19 +43,27 @@ void setup() {
   intro_music = new SoundFile(this, "menu.mp3");
   main_music = new SoundFile(this, "main.mp3");
   screamer_music = new SoundFile(this, "screamer.mp3");
+  win_music = new SoundFile(this, "win.mp3");
 
   intro_music.play();
   random = new Random();
-  color c = color(255, 0, 0);
+  color c = color(90, 10, 20);
   button = new Button(width/2-width*0.3 + width*0.15, 614, (int) (width*0.3), (int) (height*0.2), c);
   bar = new ProgressBar(50, 50, 100, 30);
   background_image = loadImage("Fondo00.png");
   bed_image = loadImage("Fondo01.png");
+  win_image = loadImage("win.png");
+  win_image.resize(width, 0);
+
+  menu_image = loadImage("menu.png");
+  menu_image.resize(width, 0);
 
   println(width);
   println(height);
   background_image.resize(width, 0);
   bed_image.resize(width+9, 0);
+
+
 
 
   monster = new Monster();
@@ -64,6 +80,9 @@ void setup() {
       if (bar.getProgress() <= 0.1) {
         monster.setPose(POSE.SCREAMER);
         screamer_music.play();
+      } else if (bar.getProgress() > 0.1 && bar.getProgress() < 0.5) {
+        monster.setPose(POSE.CAMA);
+        progress_speed = 0.01;
       } else {
 
         int randomto2 = random.nextInt(4);
@@ -80,14 +99,29 @@ void setup() {
       }
     }
   };
+
+
+  task_change_to_win_scene = new TimerTask() {
+    public void run() {
+      if (monster.getPose() != POSE.SCREAMER) {
+        scene = 2;
+      }
+    }
+  };
 }
 
 void draw() {
   switch(scene) {
   case 0:
-
     background(0);
+
+    imageMode(CORNER);
+    image(menu_image, 0, 0);
     button.show();
+    textAlign(CENTER);
+    textSize(80);
+    fill(0);
+    text("START", width/2, height-60);
     break;
   case 1:
     background(0);
@@ -100,9 +134,10 @@ void draw() {
       first = false;
       int randomWait = random.nextInt(0, 5001);
       timer.schedule(task_chooseRandomPose, randomWait, 400);
+      timer.schedule(task_change_to_win_scene, 30000);
     }
 
-    float progress = bar.getProgress() - 0.0005;
+    float progress = bar.getProgress() - progress_speed ;
     bar.setProgress( progress );
     bar.show();
 
@@ -115,6 +150,13 @@ void draw() {
     line(0, height, width, height);
 
 
+    break;
+
+  case 2:
+    imageMode(CORNER);
+    image(win_image, 0, 0);
+    screamer_music.pause();
+    win_music.play();
     break;
   default:
     background(0);
@@ -133,7 +175,7 @@ void mouseReleased() {
 }
 
 void keyReleased() {
-  if ( monster.getPose() != POSE.SCREAMER ) {
+  if ( monster.getPose() != POSE.SCREAMER || monster.getPose() != POSE.CAMA) {
 
     if (key == ' ') {
       background(255, 0, 0);
