@@ -53,7 +53,7 @@ void setup() {
   background_image = loadImage("Fondo00.png");
   bed_image = loadImage("Fondo01.png");
   win_image = loadImage("win.png");
-  win_image.resize(width, 0);
+  win_image.resize(0, height);
 
   menu_image = loadImage("menu.png");
   menu_image.resize(width, 0);
